@@ -8,6 +8,10 @@ The production deployment is available at [dorablog-dun.vercel.app](https://dora
 
 Use `demo / 123456` to try authenticated features. The seeded administrator login is available only in local development and is intentionally disabled in the public database.
 
+## Screenshot
+
+![DoraBlog homepage showing article cards, navigation, and the daily quote](docs/images/homepage.png)
+
 ## Features
 
 - Account registration, login, logout, and JWT-based sessions using HttpOnly cookies
@@ -25,6 +29,29 @@ Use `demo / 123456` to try authenticated features. The seeded administrator logi
 - **Backend:** Node.js, Express, SQLite locally, Turso/libSQL in production, bcrypt, JSON Web Tokens, Multer
 - **Hosting and storage:** Vercel Services, Vercel Blob
 - **Admin client:** Java Swing, Java HTTP Client, Jackson
+
+## Architecture
+
+```mermaid
+flowchart LR
+    Browser["Web browser"]
+    Admin["Java Swing admin<br/>(local development)"]
+    Database[("Turso / libSQL")]
+    Blob[("Vercel Blob")]
+
+    subgraph Vercel["Vercel project"]
+        Frontend["SvelteKit static frontend"]
+        API["Express API / Functions"]
+        Frontend -->|"same-origin /api/*"| API
+    end
+
+    Browser --> Frontend
+    Admin --> API
+    API --> Database
+    API --> Blob
+```
+
+Local development replaces Turso and Vercel Blob with a SQLite database and filesystem-backed upload directories.
 
 ## My Contributions
 
