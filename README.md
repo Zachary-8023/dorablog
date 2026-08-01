@@ -33,6 +33,7 @@ Use `demo / 123456` to try authenticated features. The seeded administrator logi
 - Built the profile workflow for viewing and editing account details, changing passwords, and deleting accounts.
 - Developed article search and sorting functionality for the article discovery page.
 - Integrated and debugged authentication, database, API, logout, and Java administration workflows.
+- Deployed the application to Vercel by configuring frontend and backend services, Turso/libSQL persistence, Vercel Blob uploads, production environment variables, same-origin API routing, and post-deployment regression checks.
 - Collaborated through feature branches, pull requests, reviews, and integration fixes.
 
 ## Getting Started
@@ -110,13 +111,21 @@ The committed `vercel.json` builds both services, routes `/api/*` before the fro
 
 ## Scripts
 
-Run these commands inside either `backend` or `frontend`, as applicable:
+Run frontend commands from `frontend`:
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
+npm run format
+```
+
+Run backend commands from `backend`:
 
 ```bash
 npm run dev
 npm run start
-npm run build
-npm run lint
 npm run format
 ```
 
