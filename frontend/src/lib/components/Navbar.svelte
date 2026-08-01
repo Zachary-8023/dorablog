@@ -2,12 +2,14 @@
   import { goto } from "$app/navigation";
   import LoginMenu from "./LoginMenu.svelte";
   import ThemeToggle from "./ThemeToggle.svelte";
+  import bellIcon from "../../assets/images/bell.png";
+  import newArticleIcon from "../../assets/images/NewArticles_icon.svg";
 </script>
 
 <nav class="navbar">
   <div class="nav-container">
     <div class="logo">
-      <img src="/src/assets/images/bell.png" alt="DoraBlog Logo" class="logo-image" />
+      <img src={bellIcon} alt="DoraBlog Logo" class="logo-image" />
       <span class="logo-text">DoraBlog</span>
     </div>
 
@@ -18,7 +20,7 @@
 
     <div class="nav-actions">
       <button class="add-button" on:click={() => goto("/new-article")}>
-        <img src="/src/assets/images/NewArticles_icon.svg" alt="New Article" class="add-icon" />
+        <img src={newArticleIcon} alt="New Article" class="add-icon" />
       </button>
       <button class="search-button" on:click={() => goto("/articles")} title="Search articles">
         <svg

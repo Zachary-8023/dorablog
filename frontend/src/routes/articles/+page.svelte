@@ -7,6 +7,7 @@
   import { getArticles, API, getResourceUrl } from "$lib/api.js";
   import ArticleCard from "$lib/components/ArticleCard.svelte";
   import { userStore } from "$lib/session.js";
+  import defaultHeader from "../../assets/images/article/header.png";
 
   let allArticles = [];
   let displayedArticles = [];
@@ -188,7 +189,7 @@
   }
 
   function getImageUrl(url) {
-    return getResourceUrl(url) || "/src/assets/images/article/header.png";
+    return getResourceUrl(url) || defaultHeader;
   }
 
   $: totalPages = Math.ceil(displayedArticles.length / pageSize);

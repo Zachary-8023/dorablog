@@ -1,0 +1,9 @@
+.vercel
+**/node_modules
+frontend/build
+frontend/.svelte-kit
+backend/data
+backend/uploads
+**/.env
+**/.env.*
+!**/.env.example

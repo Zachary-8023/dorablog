@@ -9,7 +9,7 @@
 :root {
   font-size: 16px; /* 设置根字体大小 */
   /* 浅色主题背景 */
-  --background-image: url("/src/assets/images/Background.png");
+  --background-image: url("../../assets/images/Background.png");
   /* 浅色主题卡片背景 */
   --card-background: #ffffff;
   /* 浅色主题卡片文字颜色 */
@@ -22,7 +22,7 @@
 
 /* 深色主题变量 */
 [data-theme="dark"] {
-  --background-image: url("/src/assets/images/Background_darkmode_soft.png");
+  --background-image: url("../../assets/images/Background_darkmode_soft.png");
   /* 深色主题卡片背景 */
   --card-background: #1a202c;
   /* 深色主题卡片文字颜色 */

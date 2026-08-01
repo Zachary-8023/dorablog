@@ -4,6 +4,7 @@
   import ArticleCard from "$lib/components/ArticleCard.svelte";
   import Footer from "$lib/components/Footer.svelte";
   import { getArticles, getResourceUrl } from "$lib/api.js";
+  import defaultHeader from "../assets/images/article/header.png";
 
   let homepageArticles = [];
   let loading = true;
@@ -22,8 +23,7 @@
       const articles = await getArticles();
       const sortedArticles = articles.sort((a, b) => (b.likeCount || 0) - (a.likeCount || 0));
       homepageArticles = sortedArticles.slice(0, 4).map((article) => {
-        const articleImage =
-          getResourceUrl(article.headerUrl) || "/src/assets/images/article/header.png";
+        const articleImage = getResourceUrl(article.headerUrl) || defaultHeader;
 
         console.log("Article:", article.title);
         console.log("Using image:", articleImage);
@@ -33,7 +33,7 @@
           avatar: articleImage,
           title: article.title,
           author: article.authorRealName || article.authorUsername || "Unknown",
-          authorAvatar: article.authorAvatar || "/src/assets/images/avatar-placeholder.png",
+          authorAvatar: article.authorAvatar || "/avatars/doraemon1.png",
           excerpt: article.content ? article.content.substring(0, 100) + "..." : "No content",
           likes: article.likeCount || 0,
           comments: 0

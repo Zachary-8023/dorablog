@@ -4,6 +4,8 @@
   import { userStore } from "$lib/session.js";
   import { showSuccess, showError } from "$lib/toastStore.js";
   import { API, getResourceUrl } from "$lib/api.js";
+  import defaultHeader from "../../../assets/images/article/header.png";
+  import likeIcon from "../../../assets/images/like-icon.png";
 
   export let articleId = null;
   export let title = "You may also like";
@@ -116,7 +118,7 @@
 
   // Get full image URL
   function getImageUrl(url) {
-    return getResourceUrl(url) || "/src/assets/images/article/header.png";
+    return getResourceUrl(url) || defaultHeader;
   }
 </script>
 
@@ -174,7 +176,7 @@
                 disabled={article.isLoading}
                 title="点赞"
               >
-                <img src="/src/assets/images/like-icon.png" alt="like" />
+                <img src={likeIcon} alt="like" />
                 {#if article.likeCount > 0}
                   <span class="like-count">{article.likeCount}</span>
                 {/if}

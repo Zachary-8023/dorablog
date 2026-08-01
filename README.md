@@ -1,6 +1,6 @@
 # DoraBlog
 
-DoraBlog is a full-stack personal blogging platform built with SvelteKit, Express, SQLite, and Java Swing. It was developed as a team capstone project and supports the complete workflow from account registration and article publishing to community interaction and administration.
+DoraBlog is a full-stack personal blogging platform built with SvelteKit, Express, SQLite-compatible storage, and Java Swing. It was developed as a team capstone project and supports the complete workflow from account registration and article publishing to community interaction and administration. Local development uses SQLite, while the production deployment uses Turso/libSQL for durable serverless storage.
 
 ## Live Demo
 
@@ -17,7 +17,7 @@ Use `demo / 123456` to try authenticated features. The seeded administrator logi
 - Likes and threaded comments with author and administrator moderation controls
 - User profiles with editable details, password changes, and account deletion
 - Responsive light and dark themes
-- Java Swing administration client for viewing and removing users
+- Java Swing administration client for viewing and removing users in local development
 
 ## Tech Stack
 
@@ -67,6 +67,8 @@ npm run dev
 
 Open `http://localhost:5173`.
 
+`VITE_API_URL` is used only by the local Vite development server. Production browser requests use the same origin as the frontend and are routed through `/api`, so no frontend API URL is needed on Vercel.
+
 On Windows PowerShell, use `Copy-Item .env.example .env` instead of `cp .env.example .env` if `cp` is unavailable.
 
 ### Java Administration Client
@@ -77,34 +79,34 @@ Start the backend first, then open `java-client` in a Java IDE. Add the Jackson 
 
 The repository deploys as one Vercel project with two services behind the same domain:
 
-| Path | Service | Runtime |
-| --- | --- | --- |
-| `/api/*` | Express backend | Vercel Functions |
+| Path            | Service            | Runtime                  |
+| --------------- | ------------------ | ------------------------ |
+| `/api/*`        | Express backend    | Vercel Functions         |
 | All other paths | SvelteKit frontend | Static Vercel deployment |
+
+This layout requires Vercel Services access for the account that owns the project.
 
 Production data is stored in Turso because Vercel Functions do not provide a persistent local filesystem for SQLite. Uploaded avatars and article images are stored in a public Vercel Blob store. Local development continues to use the SQLite file and local upload directories.
 
-Vercel injects the following production variables through its Turso and Blob integrations:
+The Turso integration injects these database variables:
 
 - `TURSO_DATABASE_URL`
 - `TURSO_AUTH_TOKEN`
-- `BLOB_READ_WRITE_TOKEN`
-- `VERCEL_OIDC_TOKEN`
 
-`JWT_SECRET` must also be configured for the Production, Preview, and Development environments. Do not commit any of these values.
+Connecting a Vercel Blob store supplies its required Blob/OIDC credentials automatically. Depending on the store configuration, these can include `BLOB_READ_WRITE_TOKEN`, `BLOB_STORE_ID`, and Vercel's short-lived OIDC token. `JWT_SECRET` must also be configured for the Production, Preview, and Development environments. Do not commit or paste any credential values into the repository.
 
 To create an equivalent deployment from a fork:
 
 ```bash
-npx vercel link
-npx vercel integration add tursocloud/database --plan starter --metadata region=hnd1
-npx vercel blob create-store dorablog-images --region hnd1 --access public --yes
-npx vercel env add JWT_SECRET production,preview
-npx vercel env add JWT_SECRET development
-npx vercel deploy --prod
+npx vercel@latest link
+npx vercel@latest integration add tursocloud/database --plan starter --metadata region=hnd1
+npx vercel@latest blob create-store dorablog-images --region hnd1 --access public --yes
+npx vercel@latest env add JWT_SECRET production,preview
+npx vercel@latest env add JWT_SECRET development
+npx vercel@latest deploy --prod
 ```
 
-The committed `vercel.json` builds both services, routes the API, and provides the SPA fallback required for direct visits to nested frontend routes.
+The committed `vercel.json` builds both services, routes `/api/*` before the frontend catch-all, and provides the SPA fallback required for direct visits to nested frontend routes. The committed `.vercelignore` also prevents local environment files and build artifacts from entering deployment uploads.
 
 ## Scripts
 

@@ -4,6 +4,8 @@
   import { userStore } from "$lib/session.js";
   import { showError } from "$lib/toastStore.js";
   import { API } from "$lib/api.js";
+  import likeIcon from "../../assets/images/like-icon.png";
+  import commentIcon from "../../assets/images/comment.png";
 
   export let article;
 
@@ -94,11 +96,11 @@
 
     <div class="interaction-container" on:click|stopPropagation>
       <span class="like" class:liked on:click={handleLikeClick}>
-        <img src="/src/assets/images/like-icon.png" alt="Like" />
+        <img src={likeIcon} alt="Like" />
         {likeCount}
       </span>
       <span class="comment">
-        <img src="/src/assets/images/comment.png" alt="Comment" />
+        <img src={commentIcon} alt="Comment" />
         {commentCount}
       </span>
     </div>

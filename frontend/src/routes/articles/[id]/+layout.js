@@ -1,5 +1,6 @@
 // Disable server-side rendering cache for this page
 import { API } from "$lib/api.js";
+import defaultHeader from "../../../assets/images/article/header.png";
 
 export const ssr = false;
 // Disable prerendering
@@ -28,7 +29,7 @@ export const load = async ({ params, fetch }) => {
 
     // Helper function to get full image URL
     const getImageUrl = (url) => {
-      if (!url) return "/src/assets/images/article/header.png";
+      if (!url) return defaultHeader;
       if (url.startsWith("http://") || url.startsWith("https://")) {
         return url;
       }
@@ -37,7 +38,7 @@ export const load = async ({ params, fetch }) => {
 
     // Helper function to get avatar URL with cache busting
     const getAvatarUrl = (url) => {
-      if (!url) return "/src/assets/images/avatar-placeholder.jpg";
+      if (!url) return "/avatars/doraemon1.png";
 
       let fullUrl;
       if (url.startsWith("http://") || url.startsWith("https://")) {
@@ -99,11 +100,11 @@ export const load = async ({ params, fetch }) => {
         title: "Article not found",
         content: "Sorry, we could not load this article.",
         date: new Date().toISOString(),
-        headerImage: "/src/assets/images/article/header.png",
+        headerImage: defaultHeader,
         images: [],
         author: {
           name: "Unknown",
-          avatar: "/src/assets/images/avatar-placeholder.jpg"
+          avatar: "/avatars/doraemon1.png"
         },
         likeCount: 0,
         tags: []
