@@ -1,0 +1,206 @@
+/* src/lib/styles/global.css */
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 16px; /* 设置根字体大小 */
+  /* 浅色主题背景 */
+  --background-image: url("/src/assets/images/Background.png");
+  /* 浅色主题卡片背景 */
+  --card-background: #ffffff;
+  /* 浅色主题卡片文字颜色 */
+  --card-text-color: #333333;
+  /* 浅色主题卡片边框颜色 */
+  --card-border-color: rgba(0, 0, 0, 0.1);
+  /* 浅色主题卡片阴影 */
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 深色主题变量 */
+[data-theme="dark"] {
+  --background-image: url("/src/assets/images/Background_darkmode_soft.png");
+  /* 深色主题卡片背景 */
+  --card-background: #1a202c;
+  /* 深色主题卡片文字颜色 */
+  --card-text-color: #e2e8f0;
+  /* 深色主题卡片边框颜色 */
+  --card-border-color: rgba(255, 255, 255, 0.1);
+  /* 深色主题卡片阴影 */
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 全局字体和颜色设置 */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color, #333);
+  background-color: var(--background-color, #ffffff);
+  background-image: var(--background-image);
+  background-size: 900px 900px;
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-attachment: fixed;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    background-image 0.3s ease;
+}
+
+/* 确保所有容器宽度正确 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 确保导航栏和页脚宽度正确 */
+.navbar,
+.footer {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 确保内容区域居中 */
+.home-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* 文章卡片样式 - 添加深色主题支持 */
+.article-card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border-color);
+  transition: all 0.3s ease;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.article-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
+}
+
+/* 文章标题样式 */
+.article-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--card-text-color);
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+/* 文章作者信息 */
+.article-author {
+  font-size: 0.9rem;
+  color: var(--card-text-color);
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+/* 文章摘要 */
+.article-excerpt {
+  font-size: 1rem;
+  color: var(--card-text-color);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+/* 文章标签 */
+.article-tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .articles-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .home-main {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .articles-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .article-card {
+    width: 100%;
+    margin: 8px 0;
+  }
+}
+
+/* 默认浅色主题 */
+:root {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --navbar-background: #d0eaff;
+  --navbar-text: #0066cc;
+  --navbar-hover: #003399;
+  --button-background: #ffcc00;
+  --button-text: #0066cc;
+  --button-hover: #e6b800;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --add-icon-filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(1419%)
+    hue-rotate(184deg) brightness(95%) contrast(92%);
+}
+
+/* 深色主题 */
+[data-theme="dark"] {
+  --background-color: #1a202c;
+  --text-color: #e2e8f0;
+  --navbar-background: #2d3748;
+  --navbar-text: #63b3ed;
+  --navbar-hover: #90cdf4;
+  --button-background: #d69e2e;
+  --button-text: #1a202c;
+  --button-hover: #b7791f;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --add-icon-filter: brightness(0) saturate(100%) invert(75%) sepia(98%) saturate(259%)
+    hue-rotate(184deg) brightness(103%) contrast(101%);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  background-attachment: fixed;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    background-image 0.3s ease;
+}

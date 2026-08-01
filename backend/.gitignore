@@ -1,0 +1,17 @@
+.DS_Store
+node_modules/
+build/
+.env
+.env.*
+!.env.example
+*.db
+temp/*
+!temp/.gitkeep
+public/uploads/*
+!public/uploads/avatars/
+!public/uploads/articles/
+public/uploads/avatars/*
+public/uploads/articles/*
+!public/uploads/avatars/.gitkeep
+!public/uploads/articles/.gitkeep
+
