@@ -12,38 +12,13 @@ import {
   getAllTags,
   getLikedArticlesByUser
 } from "../../data/articles-dao.js";
-import multer from "multer";
-import path from "path";
-import fs from "fs";
+import { createImageUpload, persistUploadedImage } from "../../utils/image-storage.js";
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "articles");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, "article-" + uniqueSuffix + ext);
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024
-  },
-  fileFilter: function (req, file, cb) {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Only image files are allowed"), false);
-    }
-  }
+const upload = createImageUpload({
+  directory: "articles",
+  prefix: "article",
+  maxSize: 10 * 1024 * 1024
 });
 
 /**
@@ -329,13 +304,17 @@ router.post("/upload-image", upload.single("image"), async (req, res) => {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    const imageUrl = `/uploads/articles/${req.file.filename}`;
+    const uploadedImage = await persistUploadedImage(req.file, {
+      directory: "articles",
+      prefix: "article"
+    });
+    const imageUrl = uploadedImage.url;
 
     res.json({
       location: imageUrl,
       success: true,
       imageUrl: imageUrl,
-      filename: req.file.filename
+      filename: uploadedImage.filename
     });
   } catch (error) {
     console.error("Article image upload error:", error);

@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import { API } from "$lib/api.js";
 
   export let articleAuthorId;
   export let comment;
@@ -43,7 +43,7 @@
     isSubmitting = true;
 
     try {
-      const response = await fetch(`${PUBLIC_API_BASE_URL}/comments`, {
+      const response = await fetch(`${API}/api/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -77,7 +77,7 @@
     isSubmitting = true;
 
     try {
-      const response = await fetch(`${PUBLIC_API_BASE_URL}/comments/${comment.id}`, {
+      const response = await fetch(`${API}/api/comments/${comment.id}`, {
         method: "DELETE",
         credentials: "include"
       });

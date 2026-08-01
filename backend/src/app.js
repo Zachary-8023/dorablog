@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: [`http://localhost:${PORT}`, process.env.FRONTEND_ORIGIN],
+    origin: [`http://localhost:${PORT}`, process.env.FRONTEND_ORIGIN].filter(Boolean),
     credentials: true
   })
 );
@@ -44,3 +44,5 @@ await getDatabase();
 app.listen(PORT, () => {
   console.log(`PGCIT Final Project server listening on port ${PORT}`);
 });
+
+export default app;

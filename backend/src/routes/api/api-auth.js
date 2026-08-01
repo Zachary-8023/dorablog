@@ -4,39 +4,14 @@ import jwt from "jsonwebtoken";
 import { getDatabase } from "../../data/database.js";
 import { requireAuth } from "../../middleware/auth.js";
 import { hashPassword, verifyPassword, validatePasswordStrength } from "../../utils/password-utils.js";
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import { createImageUpload, persistUploadedImage } from '../../utils/image-storage.js';
 
 const router = Router();
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'avatars');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, 'avatar-' + uniqueSuffix + ext);
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 2 * 1024 * 1024
-  },
-  fileFilter: function (req, file, cb) {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed'), false);
-    }
-  }
+const upload = createImageUpload({
+  directory: "avatars",
+  prefix: "avatar",
+  maxSize: 2 * 1024 * 1024
 });
 
 function setAuthCookie(res, token) {
@@ -44,7 +19,7 @@ function setAuthCookie(res, token) {
     httpOnly: true,
     sameSite: "lax",
     maxAge: 7 * 24 * 3600 * 1000,
-    secure: false
+    secure: Boolean(process.env.VERCEL || process.env.NODE_ENV === "production")
   });
 }
 
@@ -212,18 +187,22 @@ router.post("/upload-avatar", upload.single('avatar'), async (req, res) => {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+    const uploadedImage = await persistUploadedImage(req.file, {
+      directory: "avatars",
+      prefix: "avatar"
+    });
+    const avatarUrl = uploadedImage.url;
     const db = await getDatabase();
     await db.run(
       `INSERT INTO Images (url) VALUES (?)`,
       [avatarUrl]
     );
     
-    console.log('Avatar uploaded and saved to database:', req.file.filename);
+    console.log('Avatar uploaded and saved to database:', uploadedImage.filename);
     res.json({ 
       success: true, 
       avatarUrl: avatarUrl,
-      filename: req.file.filename 
+      filename: uploadedImage.filename
     });
   } catch (error) {
     console.error('Avatar upload error:', error);

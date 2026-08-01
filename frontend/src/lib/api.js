@@ -1,7 +1,8 @@
 //
 // Use a unified fetch; must include credentials so HttpOnly cookies are sent.
 
-export const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
+export const API =
+  import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:3000" : "");
 
 export async function api(path, options = {}) {
   const isFormData = options.body instanceof FormData;

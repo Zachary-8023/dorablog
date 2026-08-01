@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
-
-const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
+import { API } from "$lib/api.js";
 
 export const userStore = writable(null);
 

@@ -1,0 +1,36 @@
+{
+  "services": {
+    "frontend": {
+      "root": "frontend",
+      "framework": "sveltekit-1",
+      "outputDirectory": "build",
+      "rewrites": [
+        {
+          "source": "/(.*)",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    "backend": {
+      "root": "backend",
+      "entrypoint": "src/app.js",
+      "framework": "express"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api(/.*)?",
+      "destination": {
+        "type": "service",
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "type": "service",
+        "service": "frontend"
+      }
+    }
+  ]
+}

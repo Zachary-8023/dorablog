@@ -1,9 +1,9 @@
 // Disable server-side rendering cache for this page
+import { API } from "$lib/api.js";
+
 export const ssr = false;
 // Disable prerendering
 export const prerender = false;
-
-const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 // Load article data from database by ID
 export const load = async ({ params, fetch }) => {

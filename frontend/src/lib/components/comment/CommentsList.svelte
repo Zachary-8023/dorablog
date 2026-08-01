@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { PUBLIC_API_BASE_URL } from "$env/static/public";
+  import { API } from "$lib/api.js";
   import CommentItem from "./CommentItem.svelte";
   import { userStore } from "$lib/session.js";
 
@@ -33,7 +33,7 @@
     try {
       loading = true;
       error = null;
-      const res = await fetch(`${PUBLIC_API_BASE_URL}/comments/articles/${articleId}`);
+      const res = await fetch(`${API}/api/comments/articles/${articleId}`);
       if (res.ok) {
         comments = await res.json();
       } else {
@@ -53,7 +53,7 @@
     isSubmitting = true;
 
     try {
-      const response = await fetch(`${PUBLIC_API_BASE_URL}/comments`, {
+      const response = await fetch(`${API}/api/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
